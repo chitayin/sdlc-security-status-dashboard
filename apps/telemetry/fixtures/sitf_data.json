@@ -1,0 +1,69 @@
+[
+  {
+    "model": "telemetry.sitfcomponent",
+    "pk": "COMP-IDE",
+    "fields": {
+      "component_name": "Endpoint/IDE",
+      "description": "Developer workstations, local extensions, and integrated development environments."
+    }
+  },
+  {
+    "model": "telemetry.sitfcomponent",
+    "pk": "COMP-VCS",
+    "fields": {
+      "component_name": "Version Control System (VCS)",
+      "description": "Source code repositories, access control mechanisms, and commit integrity verification tools."
+    }
+  },
+  {
+    "model": "telemetry.sitfcomponent",
+    "pk": "COMP-CICD",
+    "fields": {
+      "component_name": "Continuous Integration / Continuous Delivery (CI/CD)",
+      "description": "Build pipelines, runner environments, automation scripts, and shared dependency caches."
+    }
+  },
+  {
+    "model": "telemetry.sitfcomponent",
+    "pk": "COMP-REG",
+    "fields": {
+      "component_name": "Registry",
+      "description": "Artifact repositories, package registries, container storage hubs, and dependency managers."
+    }
+  },
+  {
+    "model": "telemetry.sitfcomponent",
+    "pk": "COMP-PROD",
+    "fields": {
+      "component_name": "Production",
+      "description": "The deployment runtime, execution nodes, and serving cloud infrastructure."
+    }
+  },
+  {
+    "model": "telemetry.sitftechnique",
+    "pk": "T1001",
+    "fields": {
+      "component": "COMP-CICD",
+      "technique_name": "Action Cache Poisoning",
+      "attack_vector_payload": "simulations/action_cache_poison.sh"
+    }
+  },
+  {
+    "model": "telemetry.sitftechnique",
+    "pk": "T1002",
+    "fields": {
+      "component": "COMP-VCS",
+      "technique_name": "Imposter Commits",
+      "attack_vector_payload": "simulations/imposter_commit.sh"
+    }
+  },
+  {
+    "model": "telemetry.sitftechnique",
+    "pk": "T1003",
+    "fields": {
+      "component": "COMP-REG",
+      "technique_name": "Dependency Confusion",
+      "attack_vector_payload": "simulations/dependency_confusion.sh"
+    }
+  }
+]
