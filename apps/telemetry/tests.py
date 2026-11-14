@@ -6,8 +6,13 @@ class TelemetryFrameworkIngestionTests(TestCase):
     Validates structural consistency and operational verification of 
     Step 2 framework ingestion and JSON fixture assets.
     """
-    # 👇 ADD THIS LINE TO LOAD YOUR FIXTURE DATA AUTOMATICALLY INTO THE TEST ENVIRONMENT
+
     fixtures = ['sitf_data.json']
+
+    def setUp(self):
+        self.session = SimulationSession.objects.create(
+            current_status='Running'
+    )
 
     def test_fixture_components_ingested(self):
         """Verify all 5 core infrastructure components are properly populated."""
@@ -41,7 +46,7 @@ class TelemetryFrameworkIngestionTests(TestCase):
     def test_log_parsing_pipeline_success(self):
             """TC-06-MAP: Verify telemetry parsing creates accurate records upon successful exploit simulation."""
             # Query prerequisite seeded records
-            session_instance = SimulationSession.objects.first()
+            session_instance = self.session
             technique_instance = SITFTechnique.objects.get(technique_id='T1001')
 
             # Instantiate empty target log entry
@@ -62,7 +67,7 @@ class TelemetryFrameworkIngestionTests(TestCase):
 
     def test_log_parsing_pipeline_blocked(self):
         """Verify telemetry engine handles and commits mitigated countermeasure payload logs cleanly."""
-        session_instance = SimulationSession.objects.first()
+        session_instance = self.session
         technique_instance = SITFTechnique.objects.get(technique_id='T1002')
 
         log_entry = SimulationActivityLog(
