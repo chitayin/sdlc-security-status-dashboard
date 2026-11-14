@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SITF | Secure Login</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f4f6f9;
+        color: #1e293b;
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 420px;
+        background: #fff;
+        border: 1px solid #e5e9f0;
+        border-radius: 9px;
+        padding: 36px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.07);
+      }
+
+      .brand {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .brand-icon {
+        width: 54px;
+        height: 54px;
+        margin: 0 auto 14px;
+        display: grid;
+        place-items: center;
+        background: #172337;
+        color: #60a5fa;
+        border-radius: 10px;
+        font-size: 23px;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .subtitle {
+        color: #64748b;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+
+      .field {
+        margin-bottom: 18px;
+      }
+
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #dbe1e9;
+        border-radius: 5px;
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+      }
+
+      input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px #dbeafe;
+      }
+
+      button {
+        width: 100%;
+        padding: 13px;
+        background: #2563eb;
+        color: #fff;
+        border: 0;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      .credentials {
+        margin-top: 24px;
+        padding: 15px;
+        background: #f8fafc;
+        border: 1px solid #e5e9f0;
+        border-radius: 6px;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .credentials strong {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      .credentials code {
+        color: #1d4ed8;
+        overflow-wrap: anywhere;
+      }
+
+      .error {
+        margin-bottom: 16px;
+        padding: 11px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        border-radius: 5px;
+        font-size: 12px;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 25px;
+        color: #94a3b8;
+        font-size: 11px;
+      }
+
+      @media (max-width: 480px) {
+        .login-container {
+          padding: 26px 21px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="login-container">
+      <div class="brand">
+        <div class="brand-icon">S</div>
+        <h1>SITF Security Framework</h1>
+        <p class="subtitle">Sign in to access the Security Operations Dashboard</p>
+      </div>
+
+      {% if form.errors %}
+      <div class="error">Invalid email or password. Please try again.</div>
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <input type="hidden" name="next" value="{{ next }}" />
+
+        <div class="field">
+          <label for="id_username">Email address</label>
+          <input type="email" name="username" id="id_username" placeholder="Enter your email" required autofocus />
+        </div>
+
+        <div class="field">
+          <label for="id_password">Password</label>
+          <input type="password" name="password" id="id_password" placeholder="Enter your password" required />
+        </div>
+
+        <button type="submit">Sign In</button>
+      </form>
+
+      <div class="credentials">
+        <strong>Public Demo Credentials</strong>
+
+        Email:
+        <code>{{ demo_email }}</code>
+        <br />
+
+        Password:
+        <code>{{ demo_password }}</code>
+      </div>
+
+      <div class="footer">SITF-Based SDLC Infrastructure Security Assessment Platform</div>
+    </main>
+  </body>
+</html>

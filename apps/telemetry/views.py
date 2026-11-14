@@ -1,7 +1,9 @@
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from .models import DockerOrchestration, SITFComponent, SITFTechnique, SimulationSession, SimulationActivityLog, AnalyticsEngine, DashboardController
 
+@login_required
 def dashboard_controller(request):
     """
     Upgraded controller handling layout states, Docker orchestration hooks, 
@@ -72,6 +74,7 @@ def dashboard_controller(request):
     return render(request, "telemetry/dashboard.html", context)
 
 
+@login_required
 def analytics_engine(request):
     """
     Processes real-time inbound logs and handles complex chart asset requests via AnalyticsEngine.

@@ -1,5 +1,7 @@
 from django.test import TestCase
 from .models import SITFComponent, SITFTechnique, SimulationActivityLog, SimulationSession
+from django.urls import reverse
+from django.contrib.auth import get_user_model
 
 class TelemetryFrameworkIngestionTests(TestCase):
     """
@@ -80,3 +82,40 @@ class TelemetryFrameworkIngestionTests(TestCase):
         log_entry.parse_raw_telemetry(mock_blocked_stream)
 
         self.assertEqual(log_entry.execution_result, 'Control Blocked')
+
+
+class AuthenticationAccessTests(TestCase):
+
+    def setUp(self):
+        User = get_user_model()
+
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example.com",
+            password="TestPassword123!"
+        )
+
+    def test_dashboard_redirects_unauthenticated_user(self):
+        response = self.client.get(
+            reverse("telemetry:dashboard")
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
+    def test_analytics_redirects_unauthenticated_user(self):
+        response = self.client.get(
+            reverse("telemetry:analytics_engine")
+        )
+
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("/accounts/login/", response.url)
+
+    def test_authenticated_user_can_access_dashboard(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(
+            reverse("telemetry:dashboard")
+        )
+
+        self.assertEqual(response.status_code, 200)

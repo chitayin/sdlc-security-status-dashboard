@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -121,3 +122,19 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Authentication
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "telemetry:dashboard"
+LOGOUT_REDIRECT_URL = "login"
+
+# Public demonstration account
+DEMO_USER_EMAIL = os.getenv(
+    "DEMO_USER_EMAIL",
+    "demo@sitf.local"
+)
+
+DEMO_USER_PASSWORD = os.getenv(
+    "DEMO_USER_PASSWORD",
+    "SITF-Demo-2026!"
+)
