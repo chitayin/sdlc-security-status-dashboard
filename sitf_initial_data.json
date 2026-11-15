@@ -1,0 +1,129 @@
+[
+{
+  "model": "telemetry.sitfcomponent",
+  "pk": "COMP-CICD",
+  "fields": {
+    "component_name": "Continuous Integration / Continuous Delivery (CI/CD)",
+    "description": "Build pipelines, runner environments, automation scripts, and shared dependency caches."
+  }
+},
+{
+  "model": "telemetry.sitfcomponent",
+  "pk": "COMP-IDE",
+  "fields": {
+    "component_name": "Endpoint/IDE",
+    "description": "Developer workstations, local extensions, and integrated development environments."
+  }
+},
+{
+  "model": "telemetry.sitfcomponent",
+  "pk": "COMP-PROD",
+  "fields": {
+    "component_name": "Production",
+    "description": "The deployment runtime, execution nodes, and serving cloud infrastructure."
+  }
+},
+{
+  "model": "telemetry.sitfcomponent",
+  "pk": "COMP-REG",
+  "fields": {
+    "component_name": "Registry",
+    "description": "Artifact repositories, package registries, container storage hubs, and dependency managers."
+  }
+},
+{
+  "model": "telemetry.sitfcomponent",
+  "pk": "COMP-VCS",
+  "fields": {
+    "component_name": "Version Control System (VCS)",
+    "description": "Source code repositories, access control mechanisms, and commit integrity verification tools."
+  }
+},
+{
+  "model": "telemetry.sitftechnique",
+  "pk": "T1001",
+  "fields": {
+    "component": "COMP-CICD",
+    "technique_name": "Action Cache Poisoning",
+    "attack_vector_payload": "simulations/action_cache_poison.sh"
+  }
+},
+{
+  "model": "telemetry.sitftechnique",
+  "pk": "T1002",
+  "fields": {
+    "component": "COMP-VCS",
+    "technique_name": "Imposter Commits",
+    "attack_vector_payload": "simulations/imposter_commit.sh"
+  }
+},
+{
+  "model": "telemetry.sitftechnique",
+  "pk": "T1003",
+  "fields": {
+    "component": "COMP-REG",
+    "technique_name": "Dependency Confusion",
+    "attack_vector_payload": "simulations/dependency_confusion.sh"
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1001-01",
+  "fields": {
+    "status": "Mapped",
+    "technique": "T1001",
+    "control_name": "Restrict CI/CD Cache Write Permissions",
+    "detection_rule_reference": "Restrict cache modification to trusted workflows."
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1001-02",
+  "fields": {
+    "status": "Mapped",
+    "technique": "T1001",
+    "control_name": "Isolate and Validate Build Caches",
+    "detection_rule_reference": "Validate cache provenance before reuse."
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1002-01",
+  "fields": {
+    "status": "Mapped",
+    "technique": "T1002",
+    "control_name": "Require Signed Commits",
+    "detection_rule_reference": "Verify commit signatures before accepting changes."
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1002-02",
+  "fields": {
+    "status": "Verified",
+    "technique": "T1002",
+    "control_name": "Enforce Protected Branch Policies",
+    "detection_rule_reference": "Require pull request reviews and status checks."
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1003-01",
+  "fields": {
+    "status": "Mapped",
+    "technique": "T1003",
+    "control_name": "Enforce Trusted Package Registries",
+    "detection_rule_reference": "Configure approved package sources."
+  }
+},
+{
+  "model": "telemetry.mitigationcontrol",
+  "pk": "CTRL-T1003-02",
+  "fields": {
+    "status": "Mapped",
+    "technique": "T1003",
+    "control_name": "Verify Dependency Provenance",
+    "detection_rule_reference": "Verify dependency integrity and provenance."
+  }
+}
+]

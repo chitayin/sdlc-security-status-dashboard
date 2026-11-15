@@ -13,6 +13,9 @@ python manage.py collectstatic --noinput
 # Apply database migrations
 python manage.py migrate
 
+# Load initial SITF reference data into the deployment database
+python manage.py loaddata sitf_initial_data.json
+
 # Create or update the public demonstration account
 python manage.py shell -c "
 from django.conf import settings;
