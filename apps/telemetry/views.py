@@ -65,6 +65,8 @@ def dashboard_controller(request):
 
     # Gather data components
     components = SITFComponent.objects.all()
+    for component in components:
+        component.vulnerability_score = component.get_vulnerability_score()
 
     context = {
         "current_pillar": controller.current_view_pillar,
