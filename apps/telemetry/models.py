@@ -194,28 +194,60 @@ class DockerOrchestration(models.Model):
     docker_client_env = models.CharField(max_length=255, default="unix://var/run/docker.sock")
     target_network_name = models.CharField(max_length=255, default="isolated_bridge")
 
+    
     def provision_jenkins_node(self) -> bool:
         """
-        Spins up a sandboxed Jenkins agent container node programmatically.
+        Starts an existing Jenkins container or creates it if it does not exist.
         """
         try:
-            # Initialize connection to local system Docker daemon
             client = docker.from_env()
-            
-            # Launch isolated container instance running target testing architecture
-            client.containers.run(
-                "sitf-jenkins-python:latest",
-                detach=True,
-                name="sitf_jenkins_sandbox",
-                ports={'8080/tcp': 8081, '50000/tcp': 50000},
-                environment={"JAVA_OPTS": "-Djenkins.install.runSetupWizard=false"},
-                remove=True # Auto-cleanup resource footprints on exit
-            )
-            return True
+
+            container_name = "sitf_jenkins_sandbox"
+
+            # Check whether the Jenkins container already exists
+            try:
+                container = client.containers.get(container_name)
+
+                # Reuse an already running container
+                if container.status == "running":
+                    print("[ORCHESTRATION] Jenkins container is already running.")
+                    return True
+
+                # Restart an existing stopped container
+                container.start()
+                container.reload()
+
+                print("[ORCHESTRATION] Existing Jenkins container restarted.")
+                return container.status == "running"
+
+            except docker.errors.NotFound:
+                # Create a new container only when none exists
+                container = client.containers.run(
+                    "sitf-jenkins-python:latest",
+                    detach=True,
+                    name=container_name,
+                    ports={
+                        '8080/tcp': 8081,
+                        '50000/tcp': 50000
+                    },
+                    environment={
+                        "JAVA_OPTS": "-Djenkins.install.runSetupWizard=false"
+                    },
+                    volumes={
+                        "sitf_jenkins_home": {
+                            "bind": "/var/jenkins_home",
+                            "mode": "rw"
+                        }
+                    }
+                )
+
+                print("[ORCHESTRATION] New Jenkins container created.")
+                return True
+
         except Exception as e:
-            # Log failure state gracefully or fallback if Docker daemon isn't running locally
             print(f"[ORCHESTRATION ERROR] Container provisioning failed: {e}")
             return False
+
 
     def destroy_sandbox_node(self, container_id="sitf_jenkins_sandbox") -> bool:
         """
