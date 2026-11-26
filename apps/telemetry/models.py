@@ -20,10 +20,29 @@ class SITFComponent(models.Model):
 
     def get_vulnerability_score(self) -> float:
         """
-        Computes the current security vulnerability exposure.
-        Returns a default baseline for initialization.
+        Calculates vulnerability exposure from recorded
+        simulation outcomes for this SDLC component.
+        Score ranges from 0 to 100
         """
+        logs = SimulationActivityLog.objects.filter(
+
+        technique__component=self
+
+    )
+
+    total = logs.count()
+
+    if total == 0:
         return 0.0
+        breaches = logs.filter(
+
+        execution_result='Breach Success'
+
+    ).count()
+
+    score = (breaches / total) * 100
+
+    return round(score, 2)
     
 class SITFTechnique(models.Model):
     """Class 2: Represents the 75+ Threat Vector Definitions"""
